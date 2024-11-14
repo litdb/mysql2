@@ -103,7 +103,7 @@ class DriverStatement<RetType, ParamsType extends DbBinding[]> {
 
     async unwrapQuery(sql: string, paramValues?: any[] | undefined) {
         // console.log('unwrapQuery', sql, paramValues)
-        const [ret, _] = await this.connection.native.query<RetType>(sql, paramValues)
+        const [ret, _] = await this.connection.native.query<any>(sql, paramValues)
         return ret as RetType[]
     }
 
