@@ -1,0 +1,47 @@
+{
+  "name": "@litdb/mysql2",
+  "type": "module",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "description": "litdb driver for node-mysql2",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "bun run build.ts",
+    "minify": "shx rm -rf ./dist && bun run build && uglifyjs dist/index.js --compress --mangle -o dist/index.min.js",
+    "prepublishOnly": "bun run build",
+    "test": "bun test",
+    "release": "bun run minify && bump patch --commit --push --tag && npm publish --access public"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "typescript",
+    "orm",
+    "mysql",
+    "mysql2",
+    "mariadb"
+  ],
+  "license": "BSD-3-Clause",
+  "homepage": "https://litdb.dev",
+  "author": "Demis Bellot <https://github.com/mythz>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/litdb/mysql2.git"
+  },
+  "bugs": "https://github.com/litdb/litdb/issues",
+  "devDependencies": {
+    "@types/bun": "^1.1.13",
+    "bun-plugin-dts": "^0.3.0"
+  },
+  "dependencies": {
+    "@types/node": "^22.9.0",
+    "litdb": "^0.0.20",
+    "mysql2": "^3.11.4"
+  }
+}
