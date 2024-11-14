@@ -15,11 +15,11 @@ npm install @litdb/mysql
 ```ts
 import { connect } from "@litdb/mysql"
 
-export const connection = connect({ hostname, database, user, password })
+export const connection = connect({ host, database, user, password })
 export const { $, async:db, native } = connection
 ```
 
-> When needed use `native` to access underlying node-mysql2 driver
+> When needed use `native` to access underlying node-mysql2 Pool
 
 **app.ts**
 
