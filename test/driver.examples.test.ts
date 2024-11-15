@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'bun:test'
 import { db, $ } from './db'
-import { table, column, pick, useFilter } from 'litdb'
+import { table, column, pick } from 'litdb'
 import { Order } from './data'
 
 @table() class Contact {
@@ -11,7 +11,7 @@ import { Order } from './data'
     @column("DATETIME", { defaultValue:"CURRENT_TIMESTAMP" }) createdAt = new Date()
 }
 
-describe('PostgreSQL Driver Example Tests', () => {
+describe('MySql Driver Example Tests', () => {
 
     it ('Can run litdb.dev example', async () => {
         const sorted = {
