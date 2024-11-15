@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@types/node": "^22.9.0",
-    "litdb": "^0.0.20",
+    "litdb": "^0.0.23",
     "mysql2": "^3.11.4"
   }
 }

@@ -1,7 +1,7 @@
 import mysql from "mysql2/promise"
 
 import type { 
-    Driver, Connection, SyncConnection, DbBinding, Statement, TypeConverter, Fragment, SyncStatement, Dialect,
+    Driver, Connection, SyncConnection, DbBinding, Statement, Fragment, SyncStatement, Dialect,
     Changes, ColumnType, Constructor,
     ClassInstance,
     ReflectMeta,
@@ -13,9 +13,8 @@ import type {
     IntoFragment,
 } from "litdb"
 import { 
-    Sql, DbConnection, NamingStrategy, SyncDbConnection, DefaultValues, 
-    DialectTypes, MySqlDialect, DefaultStrategy, Schema, IS, Meta,
-    MySqlSchema,
+    Sql, DbConnection, NamingStrategy, SyncDbConnection, DialectTypes, MySqlDialect, DefaultStrategy, Schema, 
+    IS, Meta, MySqlSchema,
 } from "litdb"
 
 const NotImplemented = () => new Error("Method not implemented.")
@@ -249,8 +248,6 @@ export class MySqlTypes implements DialectTypes {
     }
 }
 
-export class MySqlSchema2 extends MySqlSchema {
-}
 
 export class MySql implements Driver
 {
@@ -259,24 +256,12 @@ export class MySql implements Driver
     schema:Schema
     $:ReturnType<typeof Sql.create>
     strategy:NamingStrategy = new DefaultStrategy()
-    variables: { [key: string]: string } = {
-        [DefaultValues.NOW]: 'CURRENT_TIMESTAMP',
-        [DefaultValues.MAX_TEXT]: 'TEXT',
-        [DefaultValues.MAX_TEXT_UNICODE]: 'TEXT',
-        [DefaultValues.TRUE]: '1',
-        [DefaultValues.FALSE]: '0',
-    }
-    types: DialectTypes
-
-    converters: { [key: string]: TypeConverter } = {}
-
     constructor() {
         this.dialect = new MySqlDialect()
         this.$ = this.dialect.$
         this.name = this.constructor.name
-        this.schema = this.$.schema = new MySqlSchema2(this)
-        this.types = new MySqlTypes()
-    }
+        this.schema = this.$.schema = new MySqlSchema(this, this.$, new MySqlTypes())
+   }
 }
 
 export class MySqlConnection implements Connection, SyncConnection {
