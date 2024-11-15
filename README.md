@@ -5,7 +5,7 @@ litdb driver for [node-mysql2](https://github.com/sidorares/node-mysql2)
 ## Install
 
 ```sh
-npm install @litdb/mysql
+npm install @litdb/mysql2
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm install @litdb/mysql
 **db.ts**
 
 ```ts
-import { connect } from "@litdb/mysql"
+import { connect } from "@litdb/mysql2"
 
 export const connection = connect({ host, database, user, password })
 export const { $, async:db, native } = connection
