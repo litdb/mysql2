@@ -160,32 +160,26 @@ export class MySqlStatement<RetType, ParamsType extends DbBinding[]>
     implements Statement<RetType, ParamsType>, SyncStatement<RetType, ParamsType>
 {
     native: DriverStatement<RetType, ParamsType>
+    $:ReturnType<typeof Sql.create>
     _as?:RetType
 
-    constructor(statement: DriverStatement<RetType, ParamsType>) {
+    constructor(statement: DriverStatement<RetType, ParamsType>, $:ReturnType<typeof Sql.create>) {
         this.native = statement
-    }
-
-    result(o:any) {
-        return o == null
-            ? null
-            : this._as && IS.obj(o) 
-                ? new (this._as as Constructor<any>)(o) 
-                : o
+        this.$ = $
     }
 
     as<T extends Constructor<any>>(t:T) {
-        const clone = new MySqlStatement<T,ParamsType>(this.native as any as DriverStatement<T, ParamsType>)
+        const clone = new MySqlStatement<T,ParamsType>(this.native as any as DriverStatement<T, ParamsType>, this.$)
         clone._as = t
         return clone
     }
 
     async all(...params: ParamsType): Promise<RetType[]> {
-        return (await this.native.all(...params)).map((x:any) => this.result(x))
+        return (await this.native.all(...params)).map((x:any) => this.$.schema.toResult(x, this._as as ClassParam))
     }
 
     async one(...params: ParamsType): Promise<RetType | null> {
-        return this.result(await this.native.get(...params))
+        return this.$.schema.toResult(await this.native.get(...params), this._as as ClassParam)
     }
 
     async column<ReturnValue>(...params: ParamsType): Promise<ReturnValue[]> {
@@ -291,9 +285,9 @@ export class MySqlConnection implements Connection, SyncConnection {
                     sb += `?`
                 }
             }
-            return new MySqlStatement(DriverStatement.forPositionalParams<RetType,ParamsType>(this, sb, params))
+            return new MySqlStatement(DriverStatement.forPositionalParams<RetType,ParamsType>(this, sb, params), this.$)
         } else {
-            return new MySqlStatement(DriverStatement.forNamedParams<RetType,ParamsType>(this, sql, params))
+            return new MySqlStatement(DriverStatement.forNamedParams<RetType,ParamsType>(this, sql, params), this.$)
         }
     }
 
@@ -307,9 +301,9 @@ export class MySqlConnection implements Connection, SyncConnection {
                     sb += `?`
                 }
             }
-            return new MySqlStatement(DriverStatement.forPositionalParams<RetType,ParamsType>(this, sb, params))
+            return new MySqlStatement(DriverStatement.forPositionalParams<RetType,ParamsType>(this, sb, params), this.$)
         } else {
-            return new MySqlStatement(DriverStatement.forNamedParams<RetType,ParamsType>(this, sql, params))
+            return new MySqlStatement(DriverStatement.forNamedParams<RetType,ParamsType>(this, sql, params), this.$)
         }
     }
 
