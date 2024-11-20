@@ -37,10 +37,10 @@
   "bugs": "https://github.com/litdb/litdb/issues",
   "devDependencies": {
     "@types/bun": "^1.1.13",
+    "@types/node": "^22.9.1",
     "bun-plugin-dts": "^0.3.0"
   },
   "dependencies": {
-    "@types/node": "^22.9.0",
     "litdb": "^0.0.25",
     "mysql2": "^3.11.4"
   }
